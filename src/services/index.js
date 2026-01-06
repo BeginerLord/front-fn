@@ -8,6 +8,11 @@ export const loginService = async (email, password) => {
   return data;
 };
 
+export const registerService = async (userData) => {
+  const { data } = await apiClient.post("/auth/register", userData);
+  return data;
+};
+
 export const getMeService = async () => {
   const { data } = await apiClient.get("/usuarios/me");
   return data;
@@ -30,3 +35,4 @@ export const deleteUserService = async (id) => {
   const { data } = await apiClient.delete(`/usuarios/${id}`);
   return data;
 };
+

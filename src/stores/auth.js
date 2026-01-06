@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { loginService } from "@/services";
+import { loginService, registerService } from "@/services";
 import { useAppStore } from "./app";
 import { clearToken, setToken, getToken } from "@/api/apiClient";
 
@@ -44,6 +44,27 @@ export const useAuthStore = defineStore("auth", {
       writeUser(null);
       clearToken();
       useAppStore().clearRequestState("login");
+    },
+  },
+});
+
+export const useRegisterStore = defineStore("register", {
+  state: () => ({
+    registeredUser: null,
+  }),
+  actions: {
+    async register(userData) {
+      const app = useAppStore();
+      return app.trackRequest("register", async () => {
+        const res = await registerService(userData);
+        const user = res?.data?.user ?? res?.data ?? res;
+        this.registeredUser = user;
+        return res;
+      });
+    },
+    clearRegistration() {
+      this.registeredUser = null;
+      useAppStore().clearRequestState("register");
     },
   },
 });

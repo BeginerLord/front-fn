@@ -75,10 +75,11 @@ export const useUserStore = defineStore("user", {
       const app = useAppStore();
       const res = await app.trackRequest("users:delete", async () => {
         const data = await deleteUserService(id);
-        this.users = this.users.filter((u) => u.id !== id);
+        // Usar _id porque la API usa MongoDB
+        this.users = this.users.filter((u) => u._id !== id && u.id !== id);
 
         // Si borró su propio usuario, limpiar perfil
-        if (this.me?.id === id) {
+        if (this.me?._id === id || this.me?.id === id) {
           this.me = null;
         }
 

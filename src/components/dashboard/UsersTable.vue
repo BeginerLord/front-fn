@@ -89,7 +89,13 @@
           <v-icon size="small">mdi-pencil-outline</v-icon>
           <v-tooltip activator="parent" location="top">Editar</v-tooltip>
         </v-btn>
-        <v-btn icon variant="text" size="small" color="error">
+        <v-btn
+          icon
+          variant="text"
+          size="small"
+          color="error"
+          @click="openDeleteDialog(item)"
+        >
           <v-icon size="small">mdi-delete-outline</v-icon>
           <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>
         </v-btn>
@@ -332,6 +338,59 @@
       :user="userToEdit"
       @saved="onUserSaved"
     />
+
+    <!-- Dialog de Confirmación de Eliminación -->
+    <v-dialog v-model="deleteDialog" max-width="400" persistent>
+      <v-card rounded="lg" color="white" class="delete-dialog">
+        <v-card-title class="d-flex align-center gap-3 pa-4">
+          <v-avatar size="48" color="error" variant="tonal">
+            <v-icon color="error">mdi-alert-outline</v-icon>
+          </v-avatar>
+          <div>
+            <span class="text-h6 text-grey-darken-3">Eliminar Usuario</span>
+            <p class="text-body-2 text-medium-emphasis mb-0">
+              Esta acción no se puede deshacer
+            </p>
+          </div>
+        </v-card-title>
+
+        <v-divider />
+
+        <v-card-text class="pa-4">
+          <p class="text-body-1 text-grey-darken-2 mb-0">
+            ¿Estás seguro de que deseas eliminar a
+            <strong
+              >{{ userToDelete?.nombre }} {{ userToDelete?.apellido }}</strong
+            >?
+          </p>
+          <p class="text-body-2 text-medium-emphasis mt-2 mb-0">
+            Se eliminará toda la información asociada a este usuario.
+          </p>
+        </v-card-text>
+
+        <v-divider />
+
+        <v-card-actions class="pa-4">
+          <v-spacer />
+          <v-btn
+            variant="text"
+            @click="closeDeleteDialog"
+            :disabled="isDeleting"
+          >
+            Cancelar
+          </v-btn>
+          <v-btn
+            color="error"
+            variant="flat"
+            :loading="isDeleting"
+            @click="confirmDelete"
+          >
+            <v-icon start size="small">mdi-delete-outline</v-icon>
+            Eliminar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -351,10 +410,15 @@ const detailsDialog = ref(false);
 const selectedUser = ref(null);
 const editDialog = ref(false);
 const userToEdit = ref(null);
+const deleteDialog = ref(false);
+const userToDelete = ref(null);
 
 const users = computed(() => userStore.users);
 const pagination = computed(() => userStore.pagination);
 const isLoading = computed(() => appStore.requestState("users:list").isLoading);
+const isDeleting = computed(
+  () => appStore.requestState("users:delete").isLoading
+);
 const isMobile = computed(() => mobile.value);
 
 const headers = [
@@ -397,6 +461,29 @@ const openEdit = (user) => {
 
 const onUserSaved = () => {
   fetchUsers(currentPage.value);
+};
+
+const openDeleteDialog = (user) => {
+  userToDelete.value = user;
+  deleteDialog.value = true;
+};
+
+const closeDeleteDialog = () => {
+  deleteDialog.value = false;
+  userToDelete.value = null;
+};
+
+const confirmDelete = async () => {
+  if (!userToDelete.value) return;
+
+  try {
+    const userId = userToDelete.value._id || userToDelete.value.id;
+    await userStore.deleteUser(userId);
+    closeDeleteDialog();
+    fetchUsers(currentPage.value);
+  } catch (err) {
+    console.error("Error eliminando usuario:", err);
+  }
 };
 
 const fetchUsers = async (page = 1) => {
@@ -456,5 +543,10 @@ onMounted(() => fetchUsers(1));
 
 .details-dialog :deep(.v-list) {
   background: transparent !important;
+}
+
+/* Modal de eliminación - tema claro */
+.delete-dialog {
+  background: #ffffff !important;
 }
 </style>

@@ -42,6 +42,11 @@
         variant="flat"
         :loading="loginState.isLoading"
       />
+
+      <p class="register-link">
+        ¿No tienes cuenta?
+        <router-link to="/register">Regístrate aquí</router-link>
+      </p>
     </v-form>
   </div>
 </template>
@@ -119,6 +124,23 @@ const handleSubmit = async () => {
 .login-form {
   display: grid;
   gap: 10px;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.register-link a {
+  color: #0f766e;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
 }
 </style>
 
