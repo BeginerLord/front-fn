@@ -11,9 +11,18 @@ export const useUserStore = defineStore("user", {
   state: () => ({
     me: null,
     users: [],
+    pagination: {
+      page: 1,
+      limit: 10,
+      total: 0,
+      totalPages: 0,
+      hasNextPage: false,
+      hasPrevPage: false,
+    },
   }),
   getters: {
-    getById: (state) => (id) => state.users.find((u) => u.id === id) || null,
+    getById: (state) => (id) =>
+      state.users.find((u) => u._id === id || u.id === id) || null,
   },
   actions: {
     async fetchMe() {
@@ -25,15 +34,17 @@ export const useUserStore = defineStore("user", {
       });
     },
 
-    async fetchUsers() {
+    async fetchUsers(params = {}) {
       const app = useAppStore();
-      const res = await app.trackRequest("users:list", async () => {
-        const data = await getUsersService();
-        const users = data?.data ?? data ?? [];
+      return app.trackRequest("users:list", async () => {
+        const data = await getUsersService(params);
+        const users = data?.data?.users ?? data?.data ?? data ?? [];
         this.users = Array.isArray(users) ? users : [];
-        return this.users;
+        if (data?.pagination) {
+          this.pagination = data.pagination;
+        }
+        return { users: this.users, pagination: this.pagination };
       });
-      return res;
     },
 
     async updateUser(id, payload) {

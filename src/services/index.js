@@ -13,8 +13,11 @@ export const getMeService = async () => {
   return data;
 };
 
-export const getUsersService = async () => {
-  const { data } = await apiClient.get("/usuarios");
+export const getUsersService = async (params = {}) => {
+  const { page = 1, limit = 10 } = params;
+  const { data } = await apiClient.get("/usuarios", {
+    params: { page, limit },
+  });
   return data;
 };
 
