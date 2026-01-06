@@ -56,7 +56,11 @@
           </v-btn>
         </template>
         <v-list density="compact">
-          <v-list-item prepend-icon="mdi-account-outline" title="Mi perfil" />
+          <v-list-item
+            prepend-icon="mdi-account-outline"
+            title="Mi perfil"
+            @click="openProfile"
+          />
           <v-list-item prepend-icon="mdi-cog-outline" title="Configuración" />
           <v-divider />
           <v-list-item
@@ -71,6 +75,79 @@
     <v-main class="main-content">
       <slot />
     </v-main>
+
+    <!-- Profile Dialog -->
+    <v-dialog v-model="profileDialog" max-width="420">
+      <v-card rounded="lg">
+        <v-card-title class="d-flex align-center gap-3 pa-4">
+          <v-avatar size="48" color="teal-darken-2">
+            <span class="text-white text-h6">{{ userInitials }}</span>
+          </v-avatar>
+          <div>
+            <p class="text-h6 mb-0">{{ fullName }}</p>
+          </div>
+        </v-card-title>
+        <v-divider />
+        <v-card-text v-if="profileLoading" class="text-center py-6">
+          <v-progress-circular indeterminate color="teal-darken-2" />
+        </v-card-text>
+        <v-card-text v-else class="pa-4">
+          <v-list density="compact" class="bg-transparent">
+            <v-list-item v-if="userStore.me?.email">
+              <template #prepend
+                ><v-icon size="small">mdi-email-outline</v-icon></template
+              >
+              <v-list-item-title>Email</v-list-item-title>
+              <v-list-item-subtitle>{{
+                userStore.me.email
+              }}</v-list-item-subtitle>
+            </v-list-item>
+            <v-list-item v-if="userStore.me?.tipo_usuario">
+              <template #prepend
+                ><v-icon size="small"
+                  >mdi-shield-account-outline</v-icon
+                ></template
+              >
+              <v-list-item-title>Tipo de usuario</v-list-item-title>
+              <v-list-item-subtitle>{{
+                userStore.me.tipo_usuario
+              }}</v-list-item-subtitle>
+            </v-list-item>
+            <v-list-item v-if="userStore.me?.fecha_registro">
+              <template #prepend
+                ><v-icon size="small">mdi-calendar-outline</v-icon></template
+              >
+              <v-list-item-title>Fecha de registro</v-list-item-title>
+              <v-list-item-subtitle>{{
+                new Date(userStore.me.fecha_registro).toLocaleDateString()
+              }}</v-list-item-subtitle>
+            </v-list-item>
+            <v-list-item>
+              <template #prepend
+                ><v-icon size="small"
+                  >mdi-check-circle-outline</v-icon
+                ></template
+              >
+              <v-list-item-title>Estado</v-list-item-title>
+              <v-list-item-subtitle>
+                <v-chip
+                  :color="userStore.me?.activo ? 'success' : 'error'"
+                  size="x-small"
+                  label
+                >
+                  {{ userStore.me?.activo ? "Activo" : "Inactivo" }}
+                </v-chip>
+              </v-list-item-subtitle>
+            </v-list-item>
+          </v-list>
+        </v-card-text>
+        <v-divider />
+        <v-card-actions class="pa-4">
+          <v-spacer />
+          <v-btn variant="text" @click="profileDialog = false">Cerrar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -78,18 +155,50 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { useUserStore } from "@/stores/user";
+import { useAppStore } from "@/stores/app";
 
 const router = useRouter();
 const auth = useAuthStore();
+const userStore = useUserStore();
+const appStore = useAppStore();
 
 const drawer = ref(true);
+const profileDialog = ref(false);
+
+const profileLoading = computed(
+  () => appStore.requestState("users:me").isLoading
+);
+
+const openProfile = async () => {
+  profileDialog.value = true;
+  try {
+    await userStore.fetchMe();
+  } catch (err) {
+    console.error("Error cargando perfil", err);
+  }
+};
 
 const userInitials = computed(() => {
-  const user = auth.user;
+  const user = userStore.me || auth.user;
   if (!user) return "?";
-  const nombre = user.nombre?.[0] || "";
+  const nombre = user.nombre?.[0] || user.name?.[0] || "";
   const apellido = user.apellido?.[0] || "";
-  return (nombre + apellido).toUpperCase() || "?";
+  return (
+    (nombre + apellido).toUpperCase() || user.email?.[0]?.toUpperCase() || "?"
+  );
+});
+
+const fullName = computed(() => {
+  const me = userStore.me || auth.user;
+  if (!me) return "Usuario";
+  const name = [me.nombre, me.apellido].filter(Boolean).join(" ").trim();
+  return name || me.name || me.username || "Usuario";
+});
+
+const userEmail = computed(() => {
+  const me = userStore.me || auth.user;
+  return me?.email || "";
 });
 
 const navItems = [
