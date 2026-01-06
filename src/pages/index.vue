@@ -53,7 +53,10 @@ import { useAuthStore } from "@/stores/auth";
 import { useAppStore } from "@/stores/app";
 
 definePage({
-  meta: { layout: "auth" },
+  meta: {
+    layout: "auth",
+    publicOnly: true, // Solo accesible si NO está autenticado
+  },
 });
 
 const router = useRouter();
@@ -81,7 +84,7 @@ const handleSubmit = async () => {
 
   try {
     await auth.login(form.email, form.password);
-    router.push("/");
+    router.push("/dashboard");
   } catch {
     // Error ya manejado por el store
   }
