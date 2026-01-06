@@ -4,6 +4,7 @@ import {
   registerService,
   logoutService,
   refreshTokenService,
+  activateAccountService,
 } from "@/services";
 import { useAppStore } from "./app";
 import { clearToken, setToken, getToken } from "@/api/apiClient";
@@ -122,6 +123,30 @@ export const useRegisterStore = defineStore("register", {
     clearRegistration() {
       this.registeredUser = null;
       useAppStore().clearRequestState("register");
+    },
+  },
+});
+
+export const useActivateStore = defineStore("activate", {
+  state: () => ({
+    activated: false,
+    message: null,
+  }),
+  actions: {
+    async activate(token) {
+      const app = useAppStore();
+      return app.trackRequest("activate", async () => {
+        const res = await activateAccountService(token);
+        this.activated = true;
+        this.message =
+          res?.data?.message ?? res?.message ?? "Cuenta activada correctamente";
+        return res;
+      });
+    },
+    clearActivation() {
+      this.activated = false;
+      this.message = null;
+      useAppStore().clearRequestState("activate");
     },
   },
 });

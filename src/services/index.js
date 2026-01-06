@@ -46,3 +46,7 @@ export const refreshTokenService = async () => {
   return data;
 };
 
+export const activateAccountService = async (token) => {
+  const { data } = await apiClient.get(`/auth/activate/${token}`);
+  return data;
+};
