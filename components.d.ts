@@ -12,10 +12,18 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppBtn: typeof import('./src/components/AppBtn.vue')['default']
+    AppCard: typeof import('./src/components/AppCard.vue')['default']
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     AppInput: typeof import('./src/components/AppInput.vue')['default']
+    AppStatCard: typeof import('./src/components/AppStatCard.vue')['default']
+    DashboardStats: typeof import('./src/components/dashboard/DashboardStats.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    RecentTransactions: typeof import('./src/components/dashboard/RecentTransactions.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SavingsGoals: typeof import('./src/components/dashboard/SavingsGoals.vue')['default']
+    SessionExpiryDialog: typeof import('./src/components/ui/SessionExpiryDialog.vue')['default']
+    UserEditDialog: typeof import('./src/components/dashboard/UserEditDialog.vue')['default']
+    UsersTable: typeof import('./src/components/dashboard/UsersTable.vue')['default']
   }
 }

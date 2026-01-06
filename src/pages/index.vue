@@ -42,6 +42,11 @@
         variant="flat"
         :loading="loginState.isLoading"
       />
+
+      <p class="register-link">
+        ¿No tienes cuenta?
+        <router-link to="/register">Regístrate aquí</router-link>
+      </p>
     </v-form>
   </div>
 </template>
@@ -53,7 +58,10 @@ import { useAuthStore } from "@/stores/auth";
 import { useAppStore } from "@/stores/app";
 
 definePage({
-  meta: { layout: "auth" },
+  meta: {
+    layout: "auth",
+    publicOnly: true, // Solo accesible si NO está autenticado
+  },
 });
 
 const router = useRouter();
@@ -81,7 +89,7 @@ const handleSubmit = async () => {
 
   try {
     await auth.login(form.email, form.password);
-    router.push("/");
+    router.push("/dashboard");
   } catch {
     // Error ya manejado por el store
   }
@@ -116,6 +124,23 @@ const handleSubmit = async () => {
 .login-form {
   display: grid;
   gap: 10px;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.register-link a {
+  color: #0f766e;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
 }
 </style>
 
