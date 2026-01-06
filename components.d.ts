@@ -16,8 +16,11 @@ declare module 'vue' {
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     AppInput: typeof import('./src/components/AppInput.vue')['default']
     AppStatCard: typeof import('./src/components/AppStatCard.vue')['default']
+    DashboardStats: typeof import('./src/components/dashboard/DashboardStats.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    RecentTransactions: typeof import('./src/components/dashboard/RecentTransactions.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SavingsGoals: typeof import('./src/components/dashboard/SavingsGoals.vue')['default']
   }
 }
