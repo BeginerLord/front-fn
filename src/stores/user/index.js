@@ -18,18 +18,11 @@ export const useUserStore = defineStore("user", {
   actions: {
     async fetchMe() {
       const app = useAppStore();
-      try {
+      return app.trackRequest("users:me", async () => {
         const data = await getMeService();
-        console.log("fetchMe response:", data);
-        // API devuelve { data: { user: {...} } }
         this.me = data?.data?.user ?? data?.user ?? data;
-        app.setRequestSuccess("users:me");
         return this.me;
-      } catch (err) {
-        console.error("fetchMe error:", err);
-        app.setRequestError("users:me", err);
-        throw err;
-      }
+      });
     },
 
     async fetchUsers() {
