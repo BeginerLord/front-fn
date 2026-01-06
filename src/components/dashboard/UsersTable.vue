@@ -171,7 +171,12 @@
 
     <!-- Dialog de Detalles del Usuario -->
     <v-dialog v-model="detailsDialog" max-width="500">
-      <v-card v-if="selectedUser" rounded="lg">
+      <v-card
+        v-if="selectedUser"
+        rounded="lg"
+        color="white"
+        class="details-dialog"
+      >
         <v-card-title class="d-flex align-center gap-3 pa-4">
           <v-avatar size="48" color="teal-darken-2">
             <span class="text-white text-h6">{{
@@ -179,7 +184,7 @@
             }}</span>
           </v-avatar>
           <div>
-            <span class="text-h6"
+            <span class="text-h6 text-grey-darken-3"
               >{{ selectedUser.nombre }} {{ selectedUser.apellido }}</span
             >
             <p class="text-body-2 text-medium-emphasis mb-0">
@@ -412,5 +417,22 @@ onMounted(() => fetchUsers(1));
 
 .users-table :deep(tr:hover td) {
   background: #f1f5f9 !important;
+}
+
+/* Modal de detalles - tema claro */
+.details-dialog {
+  background: #ffffff !important;
+}
+
+.details-dialog :deep(.v-list-item-title) {
+  color: #334155 !important;
+}
+
+.details-dialog :deep(.v-list-item-subtitle) {
+  color: #64748b !important;
+}
+
+.details-dialog :deep(.v-list) {
+  background: transparent !important;
 }
 </style>
