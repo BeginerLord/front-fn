@@ -4,7 +4,7 @@
       <div class="nav-brand">
         <div class="brand-mark">ƒn</div>
         <div>
-          <p class="brand-title">Finanzas</p>
+          <p class="brand-title">Fi</p>
           <p class="brand-sub">Panel de control</p>
         </div>
       </div>
@@ -41,6 +41,8 @@
     <v-app-bar app flat class="app-header">
       <v-app-bar-nav-icon @click="drawer = !drawer" />
 
+      <span class="greeting">Hola, {{ fullName }} 👋</span>
+
       <v-spacer />
 
       <v-btn icon variant="text">
@@ -73,7 +75,7 @@
     </v-app-bar>
 
     <v-main class="main-content">
-      <slot />
+      <router-view />
     </v-main>
 
     <!-- Profile Dialog -->
@@ -252,6 +254,13 @@ const handleLogout = () => {
   background: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.greeting {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-left: 8px;
 }
 
 .main-content {
