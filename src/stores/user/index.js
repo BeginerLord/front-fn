@@ -54,15 +54,15 @@ export const useUserStore = defineStore("user", {
       const app = useAppStore();
       const res = await app.trackRequest("users:update", async () => {
         const data = await updateUserService(id, payload);
-        const updated = data?.data ?? data;
+        const updated = data?.data?.user ?? data?.data ?? data;
 
-        // Refresca en la lista
+        // Refresca en la lista (usar _id porque la API usa MongoDB)
         this.users = this.users.map((u) =>
-          u.id === id ? { ...u, ...updated } : u
+          u._id === id || u.id === id ? { ...u, ...updated } : u
         );
 
         // Si es el mismo usuario logueado (me), actualiza también
-        if (this.me?.id === id) {
+        if (this.me?._id === id || this.me?.id === id) {
           this.me = { ...this.me, ...updated };
         }
 

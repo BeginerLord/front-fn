@@ -85,11 +85,13 @@
       </template>
 
       <template #item.actions="{ item }">
-        <v-btn icon variant="text" size="small">
+        <v-btn icon variant="text" size="small" @click="openEdit(item)">
           <v-icon size="small">mdi-pencil-outline</v-icon>
+          <v-tooltip activator="parent" location="top">Editar</v-tooltip>
         </v-btn>
         <v-btn icon variant="text" size="small" color="error">
           <v-icon size="small">mdi-delete-outline</v-icon>
+          <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>
         </v-btn>
       </template>
 
@@ -316,13 +318,20 @@
         <v-card-actions class="pa-3">
           <v-spacer />
           <v-btn variant="text" @click="detailsDialog = false">Cerrar</v-btn>
-          <v-btn color="primary" variant="flat">
+          <v-btn color="primary" variant="flat" @click="openEdit(selectedUser)">
             <v-icon start size="small">mdi-pencil-outline</v-icon>
             Editar
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!-- Dialog de Edición del Usuario -->
+    <UserEditDialog
+      v-model="editDialog"
+      :user="userToEdit"
+      @saved="onUserSaved"
+    />
   </v-card>
 </template>
 
@@ -331,6 +340,7 @@ import { ref, computed, onMounted, watch } from "vue";
 import { useDisplay } from "vuetify";
 import { useUserStore } from "@/stores/user";
 import { useAppStore } from "@/stores/app";
+import UserEditDialog from "./UserEditDialog.vue";
 
 const userStore = useUserStore();
 const appStore = useAppStore();
@@ -339,6 +349,8 @@ const { mobile } = useDisplay();
 const currentPage = ref(1);
 const detailsDialog = ref(false);
 const selectedUser = ref(null);
+const editDialog = ref(false);
+const userToEdit = ref(null);
 
 const users = computed(() => userStore.users);
 const pagination = computed(() => userStore.pagination);
@@ -375,6 +387,16 @@ const formatDateTime = (date) => {
 const openDetails = (user) => {
   selectedUser.value = user;
   detailsDialog.value = true;
+};
+
+const openEdit = (user) => {
+  userToEdit.value = user;
+  detailsDialog.value = false;
+  editDialog.value = true;
+};
+
+const onUserSaved = () => {
+  fetchUsers(currentPage.value);
 };
 
 const fetchUsers = async (page = 1) => {
