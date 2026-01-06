@@ -150,6 +150,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!-- Session Expiry Dialog -->
+    <SessionExpiryDialog />
   </v-app>
 </template>
 
@@ -159,6 +162,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { useUserStore } from "@/stores/user";
 import { useAppStore } from "@/stores/app";
+import SessionExpiryDialog from "@/components/ui/SessionExpiryDialog.vue";
 
 const router = useRouter();
 const auth = useAuthStore();
@@ -266,5 +270,10 @@ const handleLogout = async () => {
 .main-content {
   background: linear-gradient(135deg, #f8fdfb 0%, #f1faf6 100%);
   min-height: 100vh;
+}
+
+/* Session Dialog */
+.session-dialog {
+  background: #ffffff !important;
 }
 </style>

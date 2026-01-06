@@ -22,6 +22,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SavingsGoals: typeof import('./src/components/dashboard/SavingsGoals.vue')['default']
+    SessionExpiryDialog: typeof import('./src/components/ui/SessionExpiryDialog.vue')['default']
     UserEditDialog: typeof import('./src/components/dashboard/UserEditDialog.vue')['default']
     UsersTable: typeof import('./src/components/dashboard/UsersTable.vue')['default']
   }

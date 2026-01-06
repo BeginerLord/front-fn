@@ -41,3 +41,8 @@ export const logoutService = async () => {
   return data;
 };
 
+export const refreshTokenService = async () => {
+  const { data } = await apiClient.post("/auth/refresh");
+  return data;
+};
+
