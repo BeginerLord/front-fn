@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { loginService, registerService } from "@/services";
+import { loginService, registerService, logoutService } from "@/services";
 import { useAppStore } from "./app";
 import { clearToken, setToken, getToken } from "@/api/apiClient";
 
@@ -39,11 +39,21 @@ export const useAuthStore = defineStore("auth", {
         return res;
       });
     },
-    logout() {
-      this.user = null;
-      writeUser(null);
-      clearToken();
-      useAppStore().clearRequestState("login");
+    async logout() {
+      const app = useAppStore();
+      try {
+        await app.trackRequest("logout", async () => {
+          await logoutService();
+        });
+      } catch {
+        // Continuar con logout local aunque falle la API
+      } finally {
+        this.user = null;
+        writeUser(null);
+        clearToken();
+        app.clearRequestState("login");
+        app.clearRequestState("logout");
+      }
     },
   },
 });

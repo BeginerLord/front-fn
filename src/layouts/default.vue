@@ -211,8 +211,8 @@ const navItems = [
   { title: "Configuración", icon: "mdi-cog-outline", to: "/configuracion" },
 ];
 
-const handleLogout = () => {
-  auth.logout();
+const handleLogout = async () => {
+  await auth.logout();
   router.push("/");
 };
 </script>

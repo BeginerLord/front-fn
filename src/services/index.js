@@ -36,3 +36,8 @@ export const deleteUserService = async (id) => {
   return data;
 };
 
+export const logoutService = async () => {
+  const { data } = await apiClient.post("/auth/logout");
+  return data;
+};
+
