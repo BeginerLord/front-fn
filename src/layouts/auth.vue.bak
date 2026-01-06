@@ -1,0 +1,162 @@
+<template>
+  <v-app>
+    <v-main class="auth-shell">
+      <div class="auth-pane form-pane">
+        <header class="brand">
+          <div class="brand-mark">ƒn</div>
+          <div>
+            <p class="brand-title">Finanzas</p>
+            <p class="brand-sub">Plataforma segura</p>
+          </div>
+        </header>
+
+        <div class="form-surface">
+          <router-view />
+        </div>
+      </div>
+
+      <div class="auth-pane art-pane">
+        <div class="art-card">
+          <div class="art-circle circle-lg"></div>
+          <div class="art-circle circle-md"></div>
+          <div class="art-circle circle-sm"></div>
+          <div class="art-dots"></div>
+        </div>
+      </div>
+    </v-main>
+  </v-app>
+</template>
+
+<script setup>
+//
+</script>
+
+<style scoped>
+.auth-shell {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e8f8f2 0%, #d9f4ec 100%);
+  color: #0f172a;
+}
+
+.auth-pane {
+  position: relative;
+  padding: clamp(24px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-pane {
+  gap: 32px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #0f766e;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  box-shadow: 0 10px 30px rgba(15, 118, 110, 0.18);
+}
+
+.brand-title {
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.4px;
+}
+
+.brand-sub {
+  margin: 0;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.form-surface {
+  background: rgba(233, 248, 242, 0.92);
+  border-radius: 18px;
+  padding: clamp(20px, 4vw, 32px);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.04);
+  max-width: 520px;
+  width: 100%;
+  backdrop-filter: blur(6px);
+}
+
+.art-pane {
+  display: grid;
+  place-items: center;
+}
+
+.art-card {
+  position: relative;
+  width: min(480px, 100%);
+  aspect-ratio: 16 / 9;
+  border-radius: 28px;
+  background: linear-gradient(160deg, #0ea5e9 0%, #0f766e 70%);
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(14, 165, 233, 0.25);
+}
+
+.art-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  filter: blur(0.3px);
+}
+
+.circle-lg {
+  width: 220px;
+  height: 220px;
+  top: -40px;
+  right: -60px;
+}
+
+.circle-md {
+  width: 140px;
+  height: 140px;
+  bottom: 10%;
+  left: -30px;
+}
+
+.circle-sm {
+  width: 90px;
+  height: 90px;
+  bottom: 20%;
+  right: 20%;
+}
+
+.art-dots {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  bottom: -30px;
+  right: -20px;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.3) 2px,
+    transparent 2px
+  );
+  background-size: 16px 16px;
+  opacity: 0.7;
+}
+
+@media (max-width: 960px) {
+  .auth-shell {
+    grid-template-columns: 1fr;
+  }
+  .art-pane {
+    order: -1;
+    padding: 24px;
+  }
+}
+</style>
