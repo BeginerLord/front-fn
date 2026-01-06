@@ -1,12 +1,15 @@
 <template>
   <div class="dashboard">
-    <p>Bienvenido al dashboard</p>
+    <p class="dashboard__subtitle">Bienvenido al dashboard</p>
+    
+    <UsersTable />
   </div>
 </template>
 
 <script setup>
 import { computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import UsersTable from "@/components/dashboard/UsersTable.vue";
 
 definePage({
   meta: { layout: "default", requiresAuth: true },
@@ -19,18 +22,13 @@ const userName = computed(() => auth.user?.nombre);
 
 <style scoped>
 .dashboard {
-  padding: 32px;
+  padding: clamp(16px, 3vw, 32px);
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.dashboard h1 {
-  color: #0f172a;
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0 0 8px;
-}
-
-.dashboard p {
+.dashboard__subtitle {
   color: #64748b;
-  margin: 0;
+  margin: 0 0 24px;
 }
 </style>

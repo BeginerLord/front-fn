@@ -37,11 +37,14 @@ export const useUserStore = defineStore("user", {
     async fetchUsers(params = {}) {
       const app = useAppStore();
       return app.trackRequest("users:list", async () => {
-        const data = await getUsersService(params);
-        const users = data?.data?.users ?? data?.data ?? data ?? [];
+        const res = await getUsersService(params);
+        // API: { data: { data: [...users], pagination: {...} } }
+        const payload = res?.data ?? res;
+        const users = payload?.data ?? payload?.users ?? [];
         this.users = Array.isArray(users) ? users : [];
-        if (data?.pagination) {
-          this.pagination = data.pagination;
+
+        if (payload?.pagination) {
+          this.pagination = { ...this.pagination, ...payload.pagination };
         }
         return { users: this.users, pagination: this.pagination };
       });
