@@ -209,7 +209,7 @@ const userEmail = computed(() => {
 
 const navItems = [
   { title: "Dashboard", icon: "mdi-view-dashboard-outline", to: "/dashboard" },
-  { title: "categorias-gastos", icon: "mdi-swap-horizontal", to: "/categorias-gastos" },
+  { title: "Categorías", icon: "mdi-tag-multiple-outline", to: "/categorias" },
 ];
 
 const handleLogout = async () => {

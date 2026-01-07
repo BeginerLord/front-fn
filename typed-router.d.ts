@@ -20,6 +20,7 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/auth/activate/[token]': RouteRecordInfo<'/auth/activate/[token]', '/auth/activate/:token', { token: ParamValue<true> }, { token: ParamValue<false> }>,
+    '/categorias': RouteRecordInfo<'/categorias', '/categorias', Record<never, never>, Record<never, never>>,
     '/dashboard': RouteRecordInfo<'/dashboard', '/dashboard', Record<never, never>, Record<never, never>>,
     '/register': RouteRecordInfo<'/register', '/register', Record<never, never>, Record<never, never>>,
   }
@@ -41,6 +42,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/auth/activate/[token].vue': {
       routes: '/auth/activate/[token]'
+      views: never
+    }
+    'src/pages/categorias.vue': {
+      routes: '/categorias'
       views: never
     }
     'src/pages/dashboard.vue': {
