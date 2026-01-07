@@ -209,10 +209,7 @@ const userEmail = computed(() => {
 
 const navItems = [
   { title: "Dashboard", icon: "mdi-view-dashboard-outline", to: "/dashboard" },
-  { title: "Transacciones", icon: "mdi-swap-horizontal", to: "/transacciones" },
-  { title: "Cuentas", icon: "mdi-wallet-outline", to: "/cuentas" },
-  { title: "Reportes", icon: "mdi-chart-bar", to: "/reportes" },
-  { title: "Configuración", icon: "mdi-cog-outline", to: "/configuracion" },
+  { title: "Categorías", icon: "mdi-tag-multiple-outline", to: "/categorias" },
 ];
 
 const handleLogout = async () => {
