@@ -14,7 +14,13 @@
           </p>
         </div>
         <v-spacer />
-        <v-btn icon variant="text" size="small" @click="close" :disabled="loading">
+        <v-btn
+          icon
+          variant="text"
+          size="small"
+          @click="close"
+          :disabled="loading"
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
@@ -67,7 +73,14 @@
           />
         </v-form>
 
-        <v-alert v-if="errorMessage" type="error" variant="tonal" class="mt-3" closable @click:close="errorMessage = ''">
+        <v-alert
+          v-if="errorMessage"
+          type="error"
+          variant="tonal"
+          class="mt-3"
+          closable
+          @click:close="errorMessage = ''"
+        >
           {{ errorMessage }}
         </v-alert>
       </v-card-text>
@@ -76,8 +89,16 @@
 
       <v-card-actions class="pa-4">
         <v-spacer />
-        <v-btn variant="text" @click="close" :disabled="loading">Cancelar</v-btn>
-        <v-btn color="teal-darken-2" variant="flat" :loading="loading" :disabled="!isValid" @click="handleSubmit">
+        <v-btn variant="text" @click="close" :disabled="loading"
+          >Cancelar</v-btn
+        >
+        <v-btn
+          color="teal-darken-2"
+          variant="flat"
+          :loading="loading"
+          :disabled="!isValid"
+          @click="handleSubmit"
+        >
           <v-icon start size="small">mdi-content-save-outline</v-icon>
           {{ isEdit ? "Guardar cambios" : "Crear" }}
         </v-btn>
@@ -100,15 +121,16 @@ const emit = defineEmits(["update:modelValue", "save", "update:error"]);
 
 const formRef = ref(null);
 const isValid = ref(false);
-const form = reactive({ codigo: "ALM", nombre: "", tipo: "egreso", descripcion: "" });
+const form = reactive({
+  codigo: "ALM",
+  nombre: "",
+  tipo: "egreso",
+  descripcion: "",
+});
 
-const codigoItems = [
-  { title: "ALM - Alimentación", value: "ALM" },
-];
+const codigoItems = [{ title: "ALM - Alimentación", value: "ALM" }];
 
-const tipoItems = [
-  { title: "Egreso", value: "egreso" },
-];
+const tipoItems = [{ title: "Egreso", value: "egreso" }];
 
 const dialog = computed({
   get: () => props.modelValue,
@@ -119,7 +141,8 @@ const isEdit = computed(() => !!props.category);
 
 const rules = {
   required: (v) => !!v || "Campo requerido",
-  minLength: (min) => (v) => (v && v.length >= min) || `Mínimo ${min} caracteres`,
+  minLength: (min) => (v) =>
+    (v && v.length >= min) || `Mínimo ${min} caracteres`,
 };
 
 const initials = computed(() => {

@@ -1,5 +1,10 @@
 <template>
-  <v-card rounded="lg" class="categories-table-card" color="white" theme="light">
+  <v-card
+    rounded="lg"
+    class="categories-table-card"
+    color="white"
+    theme="light"
+  >
     <v-card-title class="d-flex align-center justify-space-between pa-4">
       <div>
         <span class="text-h6">Categorías de gasto</span>
@@ -49,34 +54,44 @@
           </v-avatar>
           <div>
             <p class="mb-0 font-weight-medium">
-              {{ item.nombre || item.name || 'Sin nombre' }}
+              {{ item.nombre || item.name || "Sin nombre" }}
             </p>
             <p class="mb-0 text-body-2 text-medium-emphasis">
-              {{ item.descripcion || item.descripcion_corta || 'Sin descripción' }}
+              {{
+                item.descripcion || item.descripcion_corta || "Sin descripción"
+              }}
             </p>
           </div>
         </div>
       </template>
 
       <template #item.codigo="{ item }">
-        <span class="text-body-2 font-weight-medium">{{ item.codigo || '-' }}</span>
+        <span class="text-body-2 font-weight-medium">{{
+          item.codigo || "-"
+        }}</span>
       </template>
 
       <template #item.tipo="{ item }">
         <v-chip size="small" variant="tonal" color="indigo">
-          {{ (item.tipo || '—').toString().toUpperCase() }}
+          {{ (item.tipo || "—").toString().toUpperCase() }}
         </v-chip>
       </template>
 
       <template #item.activo="{ item }">
-        <v-chip size="small" :color="item.activo ? 'success' : 'error'" variant="flat">
-          {{ item.activo ? 'Activo' : 'Inactivo' }}
+        <v-chip
+          size="small"
+          :color="item.activo ? 'success' : 'error'"
+          variant="flat"
+        >
+          {{ item.activo ? "Activo" : "Inactivo" }}
         </v-chip>
       </template>
 
       <template #item.createdAt="{ item }">
         <span class="text-body-2 text-medium-emphasis">
-          {{ formatDate(item.createdAt || item.updatedAt || item.fecha_creacion) }}
+          {{
+            formatDate(item.createdAt || item.updatedAt || item.fecha_creacion)
+          }}
         </span>
       </template>
 
@@ -136,11 +151,11 @@
             </template>
 
             <v-list-item-title class="font-weight-medium">
-              {{ cat.nombre || cat.name || 'Sin nombre' }}
+              {{ cat.nombre || cat.name || "Sin nombre" }}
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{ cat.codigo ? `Código: ${cat.codigo}` : 'Sin código' }} ·
-              {{ cat.tipo ? cat.tipo.toUpperCase() : '—' }}
+              {{ cat.codigo ? `Código: ${cat.codigo}` : "Sin código" }} ·
+              {{ cat.tipo ? cat.tipo.toUpperCase() : "—" }}
             </v-list-item-subtitle>
 
             <template #append>
@@ -150,7 +165,7 @@
                   :color="cat.activo ? 'success' : 'error'"
                   variant="flat"
                 >
-                  {{ cat.activo ? 'Activo' : 'Inactivo' }}
+                  {{ cat.activo ? "Activo" : "Inactivo" }}
                 </v-chip>
                 <v-btn
                   icon
@@ -200,7 +215,14 @@ const props = defineProps({
   loading: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(["refresh", "edit", "delete", "select", "page-change", "create"]);
+const emit = defineEmits([
+  "refresh",
+  "edit",
+  "delete",
+  "select",
+  "page-change",
+  "create",
+]);
 
 const { mdAndDown } = useDisplay();
 const isMobile = computed(() => mdAndDown.value);

@@ -2,7 +2,9 @@
   <AppCard title="Estadísticas" subtitle="Basadas en la categoría seleccionada">
     <div v-if="loading" class="text-center py-6">
       <v-progress-circular indeterminate color="teal-darken-2" />
-      <p class="text-body-2 text-medium-emphasis mt-2">Cargando estadísticas...</p>
+      <p class="text-body-2 text-medium-emphasis mt-2">
+        Cargando estadísticas...
+      </p>
     </div>
 
     <div v-else-if="!category">
@@ -15,17 +17,22 @@
       <div class="summary">
         <p class="summary-name">{{ categorySummary.nombre }}</p>
         <p class="summary-meta">
-          Código: {{ categorySummary.codigo }} · Tipo: {{ categorySummary.tipo }}
+          Código: {{ categorySummary.codigo }} · Tipo:
+          {{ categorySummary.tipo }}
         </p>
         <p class="summary-meta">
           {{ categorySummary.descripcion }}
         </p>
         <p class="summary-meta">
-          Estado: {{ categorySummary.estado }} · Creada: {{ categorySummary.creada }}
+          Estado: {{ categorySummary.estado }} · Creada:
+          {{ categorySummary.creada }}
         </p>
       </div>
 
-      <div v-if="normalizedStats && Object.keys(normalizedStats).length" class="stats-grid">
+      <div
+        v-if="normalizedStats && Object.keys(normalizedStats).length"
+        class="stats-grid"
+      >
         <div
           v-for="(value, key) in normalizedStats"
           :key="key"
@@ -75,7 +82,9 @@ const normalizedStats = computed(() => {
   if (!raw || typeof raw !== "object") return null;
 
   return Object.entries(raw).reduce((acc, [key, val]) => {
-    const label = key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    const label = key
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
     const value = typeof val === "number" ? val.toLocaleString() : val;
     acc[label] = value;
     return acc;

@@ -15,7 +15,11 @@
           <AppStatCard
             icon="mdi-chart-bar-stacked"
             label="Stats seleccionadas"
-            :value="selectedCategory ? selectedCategory.nombre || selectedCategory.name : 'Sin selección'"
+            :value="
+              selectedCategory
+                ? selectedCategory.nombre || selectedCategory.name
+                : 'Sin selección'
+            "
             subtitle="Elige una categoría para ver stats"
             icon-color="amber-darken-3"
             icon-bg="rgba(245,158,11,0.1)"
@@ -64,13 +68,18 @@
         </v-card-title>
         <v-card-text>
           ¿Eliminar la categoría
-          <strong>{{ deleteTarget?.nombre || deleteTarget?.name }}</strong>?
-          Esta acción no se puede deshacer.
+          <strong>{{ deleteTarget?.nombre || deleteTarget?.name }}</strong
+          >? Esta acción no se puede deshacer.
         </v-card-text>
         <v-card-actions class="pa-4">
           <v-spacer />
           <v-btn variant="text" @click="deleteDialog = false">Cancelar</v-btn>
-          <v-btn color="error" variant="flat" :loading="deleteLoading" @click="confirmDelete">
+          <v-btn
+            color="error"
+            variant="flat"
+            :loading="deleteLoading"
+            @click="confirmDelete"
+          >
             Eliminar
           </v-btn>
         </v-card-actions>
@@ -115,9 +124,10 @@ const selectedStats = computed(() =>
 const listLoading = computed(
   () => appStore.requestState("categories:list").isLoading
 );
-const saveLoading = computed(() =>
-  appStore.requestState("categories:create").isLoading ||
-  appStore.requestState("categories:update").isLoading
+const saveLoading = computed(
+  () =>
+    appStore.requestState("categories:create").isLoading ||
+    appStore.requestState("categories:update").isLoading
 );
 const deleteLoading = computed(
   () => appStore.requestState("categories:delete").isLoading
