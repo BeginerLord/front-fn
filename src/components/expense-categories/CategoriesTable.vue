@@ -5,32 +5,60 @@
     color="white"
     theme="light"
   >
-    <v-card-title class="d-flex align-center justify-space-between pa-4">
+    <v-card-title
+      class="d-flex flex-column flex-md-row align-start align-md-center justify-space-between pa-4 gap-3"
+    >
       <div>
         <span class="text-h6">Categorías de gasto</span>
         <p class="text-body-2 text-medium-emphasis mb-0">
           {{ pagination.total }} categorías registradas
         </p>
       </div>
-      <div class="d-flex align-center gap-2">
-        <v-btn
-          color="teal-darken-2"
-          variant="flat"
-          size="small"
-          prepend-icon="mdi-plus"
-          @click="$emit('create')"
-        >
-          Nueva categoría
-        </v-btn>
-        <v-btn
-          icon
-          variant="text"
-          size="small"
+      <div class="header-actions">
+        <v-autocomplete
+          v-model="internalSelectedId"
+          :items="categoryOptions"
+          item-title="title"
+          item-value="value"
+          label="Buscar por ID"
+          variant="outlined"
+          density="compact"
+          prepend-inner-icon="mdi-magnify"
+          hide-details="auto"
+          clearable
           :loading="loading"
-          @click="$emit('refresh')"
+          class="search-field"
+          @update:model-value="onSelectById"
         >
-          <v-icon>mdi-refresh</v-icon>
-        </v-btn>
+          <template #item="{ props: itemProps, item }">
+            <v-list-item v-bind="itemProps">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-subtitle class="text-caption"
+                >ID: {{ item.raw.value }}</v-list-item-subtitle
+              >
+            </v-list-item>
+          </template>
+        </v-autocomplete>
+        <div class="d-flex align-center gap-2">
+          <v-btn
+            color="teal-darken-2"
+            variant="flat"
+            size="small"
+            prepend-icon="mdi-plus"
+            @click="$emit('create')"
+          >
+            Nueva categoría
+          </v-btn>
+          <v-btn
+            icon
+            variant="text"
+            size="small"
+            :loading="loading"
+            @click="$emit('refresh')"
+          >
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+        </div>
       </div>
     </v-card-title>
 
@@ -213,6 +241,8 @@ const props = defineProps({
     default: () => ({ page: 1, totalPages: 1, total: 0, limit: 10 }),
   },
   loading: { type: Boolean, default: false },
+  categoryOptions: { type: Array, default: () => [] },
+  selectedId: { type: [String, null], default: null },
 });
 
 const emit = defineEmits([
@@ -222,6 +252,7 @@ const emit = defineEmits([
   "select",
   "page-change",
   "create",
+  "select-by-id",
 ]);
 
 const { mdAndDown } = useDisplay();
@@ -241,6 +272,15 @@ const currentPage = computed({
   get: () => props.pagination?.page || 1,
   set: (val) => emit("page-change", val),
 });
+
+const internalSelectedId = computed({
+  get: () => props.selectedId,
+  set: () => {},
+});
+
+const onSelectById = (val) => {
+  emit("select-by-id", val || null);
+};
 
 const getInitials = (item) => {
   const n = item?.nombre?.[0] || item?.name?.[0] || "";
@@ -272,5 +312,27 @@ const formatDate = (date) => {
 
 :deep(.categories-table .v-data-table__th) {
   color: #0f172a;
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-field {
+  min-width: 220px;
+  max-width: 280px;
+}
+
+@media (max-width: 960px) {
+  .header-actions {
+    width: 100%;
+  }
+  .search-field {
+    min-width: 100%;
+    max-width: 100%;
+  }
 }
 </style>

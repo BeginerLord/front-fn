@@ -33,12 +33,15 @@
             :categories="categories"
             :pagination="pagination"
             :loading="listLoading"
+            :category-options="categoryOptions"
+            :selected-id="selectedCategoryId"
             @refresh="loadCategories(pagination.page)"
             @create="openCreate"
             @edit="openEdit"
             @delete="openDelete"
             @select="selectCategory"
             @page-change="loadCategories"
+            @select-by-id="selectCategoryById"
           />
         </v-col>
         <v-col cols="12" lg="4">
@@ -113,6 +116,20 @@ const errorMessage = ref("");
 
 const categories = computed(() => store.categories);
 const pagination = computed(() => store.pagination);
+const categoryOptions = computed(() => {
+  const seen = new Set();
+  return categories.value
+    .filter((c) => {
+      const id = c._id || c.id;
+      if (!id || seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    })
+    .map((c) => ({
+      title: c.nombre || c.name || "Sin nombre",
+      value: c._id || c.id,
+    }));
+});
 const selectedCategory = computed(() => {
   if (!selectedCategoryId.value) return null;
   return store.getById(selectedCategoryId.value);
@@ -186,10 +203,13 @@ const confirmDelete = async () => {
 
 const selectCategory = async (cat) => {
   const id = cat?._id || cat?.id;
-  selectedCategoryId.value = id;
-  if (id) {
-    await store.fetchCategoryStats(id);
-  }
+  await selectCategoryById(id);
+};
+
+const selectCategoryById = async (id) => {
+  selectedCategoryId.value = id || null;
+  if (!id) return;
+  await store.fetchCategoryStats(id);
 };
 
 onMounted(() => {

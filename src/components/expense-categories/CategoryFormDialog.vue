@@ -29,14 +29,14 @@
 
       <v-card-text class="pa-4">
         <v-form ref="formRef" v-model="isValid" @submit.prevent="handleSubmit">
-          <v-select
+          <v-text-field
             v-model="form.codigo"
-            :items="codigoItems"
             label="Código"
             variant="outlined"
             density="comfortable"
-            :rules="[rules.required]"
-            prepend-inner-icon="mdi-form-select"
+            :rules="[rules.required, rules.minLength(2)]"
+            prepend-inner-icon="mdi-identifier"
+            placeholder="Ej: ALM"
             hide-details="auto"
             class="mb-3"
           />
@@ -122,13 +122,11 @@ const emit = defineEmits(["update:modelValue", "save", "update:error"]);
 const formRef = ref(null);
 const isValid = ref(false);
 const form = reactive({
-  codigo: "ALM",
+  codigo: "",
   nombre: "",
   tipo: "egreso",
   descripcion: "",
 });
-
-const codigoItems = [{ title: "ALM - Alimentación", value: "ALM" }];
 
 const tipoItems = [{ title: "Egreso", value: "egreso" }];
 
